@@ -31,22 +31,15 @@ public:
     vector<complex<float>> GetMatrix() const { return m_vecMatrix; };
     unsigned short int GetRowSize() const    { return m_iRowSize; };
     unsigned short int GetColSize() const    { return m_iColSize; }; 
-
     void PrintMatrix() const;
     complex<float> GetValueAt(const unsigned short int inRowIndex,  const unsigned short int inColIndex) const;
     void ModifyValueAt(const unsigned short int inRowIndex,  const unsigned short int inColIndex, const complex<float> inVal);
-    
     void ConjugateTranspose();
-
     bool operator==(const CMatrix& inMatrix2);
-    
     complex<float> Trace() const;
-
     void operator*(const CMatrix &inMatrix2);      // TODO: Consider changing this to return an object.
     void MatrixMultiply(const CMatrix &inMatrix2); // TODO: Consider changing this to return an object.
-
     vector<float> PauliDecomposition() const;
-
 
 protected:
     // Base Class Data Members
@@ -73,23 +66,19 @@ public:
     CPauliMatrix operator*(const CPauliMatrix &inPauli2) const;
     void operator*(const complex<float> inPhi);
 
-
 protected:
-    // Derived Class Data Members    // For Example: XY = iZ This gives pauli_factor = i and pauli_string = "Z", 
+    // Derived Class Data Members    // For Example: XY = iZ This gives m_cxPauliFactor = i and m_sPauliString = "Z", 
     //-------------------------------------
     // Also have matrix, row_size, and col_size as protected data members.    
     complex<float> m_cxPauliFactor;  // Only the following complex numbers: { 1, -1, i, -i }
     string m_sPauliString;           // Single Character String such as "Z"
 };
-
 CPauliMatrix MultiplyPauli(const CPauliMatrix &inPauli1, const CPauliMatrix &inPauli2);
 void MultiplyPhase(const complex<float> inPhi, CPauliMatrix &inPauli);
-
 void TestMultiplyPhase(const complex<float> &inPhi1, const complex<float> &inPhi2);
 void TestPauliIsHermitian();
 void ShortTestMultiplyPauli(const complex<float> &inPhi1, const string &inPauliID1, const complex<float> &inPhi2, const string &inPauliID2);
 void FullTestMultiplyPauli(const string &inPauliID1,  const string &inPauliID2);
-
 
 
 
@@ -109,7 +98,6 @@ public:
     CPauliAlgebraElement operator+(const CPauliAlgebraElement &inPAElement2) const; // For AddPauliAlgebra()
     CPauliAlgebraElement operator%(const CPauliAlgebraElement &inPAElement2) const; // For MultiplyPauliAlgebra()
 
-
 private:
     // Derived Derived Class Data Members  // For Example: -iX @ Y @ Z  This gives pauli_element_phase = -i and pauli_element_string = "X @ Y @ Z"
     //-------------------------------------
@@ -118,23 +106,16 @@ private:
 
 };
 void GetPauliString(const string &inPauliChar1, const string &inPauliChar2, complex<float> &outFactor, string &outPauliChar3);
-
 CPauliAlgebraElement MakePauliAlgebraElement(string inPauliGroupString);
 void MultiplyPauliAlgebraByScalar(const complex<float> &inZ, CPauliAlgebraElement &inPAElement);
 CPauliAlgebraElement AddPauliAlgebra(const CPauliAlgebraElement &inPAElement1, const CPauliAlgebraElement &inPAElement2);
 CPauliAlgebraElement MultiplyPauliAlgebra(const CPauliAlgebraElement &inPAElement1, const CPauliAlgebraElement &inPAElement2);
-
 void TestConstructPauliElement( const complex<float> &inZ, const string inPauliGroupString );
 void TestAddPauliAlgebra( const complex<float> &inZ1, const string &inPAString1, const complex<float> &inZ2, const string &inPAString2);
 void TestMultiplyPauliAlgebra( const complex<float> &z1, const string &p1_algebra_string, const complex<float> &z2, const string &p2_algebra_string );
 
-
-
-
 CMatrix GenerateHermitianMatrix(const unsigned short int inBoundParam=10, unsigned short int inSideLength=0);
 void Goal1Test(unsigned short int inNumOfTests=10, unsigned short int inBoundParam=10, bool inWillPrintMatrix=false);
-
-
 void Goal2Test(unsigned short int inNumOfTests=10, unsigned short int inBoundParam=10, unsigned short int inSideLength=2);
 
 #endif
