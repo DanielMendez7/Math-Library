@@ -957,24 +957,6 @@ CPauliAlgebraElement CPauliAlgebraElement::operator%(const CPauliAlgebraElement 
     MultiplyPauliAlgebraByScalar(m_cxPhase, m_paeElement1);                   // m_paeElement1 = -iI
 
 
-    /************** Old ******/
-    // CPauliMatrix m_pmPauMatr1 = CPauliMatrix(pauli_char);       // Z
-    // CPauliMatrix m_pmPauMatr2 = CPauliMatrix(pauli_char2);      // Z
-
-    // MultiplyPhase(this->m_cxElementPhase, m_pmPauMatr1);        //  i * Z = iZ
-    // MultiplyPhase(inPAElement2.m_cxElementPhase, m_pmPauMatr2); // -1 * Z = -Z
-
-    // CPauliMatrix m_pmPauMatr3 = MultiplyPauli(m_pmPauMatr1, m_pmPauMatr2);  // iZ * -Z = -iI
-
-    // Copy CPauliMatrix data members to the CPauliAlgebraElement data members.
-    // TODO: Refactor this by using a copy constructor. Ideally do not copy anything, should keep data members "in place".
-    // CPauliAlgebraElement m_paeElement1 = CPauliAlgebraElement(2, 2);
-    // m_paeElement1.m_vecMatrix = m_pmPauMatr3.GetMatrix();       // Very BAD to copy full vectors. Time and Space increase. FIX.
-    // m_paeElement1.m_cxElementPhase = m_pmPauMatr3.m_cxPauliFactor;
-    // m_paeElement1.m_sElementString = m_pmPauMatr3.pauli_string;
-    /************** Old ******/
-
-
     // Determine the number of Pauli Algebra Multiplications.
     // For Example: Go from "X @ X @ I" to "XXI" which requires cutting out "@" and " ".
     // TODO: Refactor this by using this format, "XXI", rather than this format, "X @ X @ I", for the data member m_sElementString.
@@ -988,29 +970,8 @@ CPauliAlgebraElement CPauliAlgebraElement::operator%(const CPauliAlgebraElement 
 
 
     for ( unsigned short int e = 1; e < stripped_pstring.size(); e++ ) {
-        // // Verify FIRST input Pauli Element which must be one of the following: { "I", "X", "Y", "Z" }
         m_sLeftPauChar = string(1, stripped_pstring.at(e));
-        // DELETE. Took care of checking in CPauliMatrix(string inPauliID)
-        // if (pauli_char.compare("X") && pauli_char.compare("x") && 
-        //     pauli_char.compare("Y") && pauli_char.compare("y") &&
-        //     pauli_char.compare("Z") && pauli_char.compare("z") &&
-        //     pauli_char.compare("I") && pauli_char.compare("i")) {
-        //     cout << "MakePauliAlgebraElement failed because " << "from your input string " << "\"" << p1_algebra_matrix.pauli_element_string << "\"" << "," << "\"" << pauli_char << "\"" << " is not valid. " << "Replace " << "\"" << pauli_char << "\"" << " with one of the following: { \"I\", \"X\", \"Y\", \"Z\" }" << endl;
-        //     cout << "Exiting Program . . . " << endl;
-        //     exit(1);
-        // }
-
-        // // Verify SECOND input Pauli Element which must be one of the following: { "I", "X", "Y", "Z" }
         m_sRightPauChar = string(1, stripped_pstring2.at(e));
-        // DELETE. Took care of checking in CPauliMatrix(string inPauliID)
-        // if (pauli_char2.compare("X") && pauli_char2.compare("x") && 
-        //     pauli_char2.compare("Y") && pauli_char2.compare("y") &&
-        //     pauli_char2.compare("Z") && pauli_char2.compare("z") &&
-        //     pauli_char2.compare("I") && pauli_char2.compare("i")) {
-        //     cout << "MakePauliAlgebraElement failed because " << "from your input string " << "\"" << p2_algebra_matrix.pauli_element_string << "\"" << "," << "\"" << pauli_char << "\"" << " is not valid. " << "Replace " << "\"" << pauli_char << "\"" << " with one of the following: { \"I\", \"X\", \"Y\", \"Z\" }" << endl;
-        //     cout << "Exiting Program . . . " << endl;
-        //     exit(1);
-        // }
         
         // Nth Pauli Algebra multiplication between the two matrices.
         // For example, if the algebra multiplication is i(Z @ X) * -(Z @ Y)
@@ -1021,7 +982,6 @@ CPauliAlgebraElement CPauliAlgebraElement::operator%(const CPauliAlgebraElement 
         CPauliAlgebraElement m_paeElement2 = CPauliAlgebraElement(m_sPauliCharN);   // m_paeElement2 = Z  // Verified m_sPauliChar is valid in the CPauliMatrix(string inPauliID) constructor.
         MultiplyPauliAlgebraByScalar(m_cxPhaseN, m_paeElement2);                    // m_paeElement2 = iZ  
 
-        
         // Update current AlgebraElement. (i.e. update m_paeElement1)
         // Does the tensor product, @,  between two pauli algebra elements.
         // For example, if the algebra multiplication is i(Z @ X) * -(Z @ Y)
@@ -1030,31 +990,7 @@ CPauliAlgebraElement CPauliAlgebraElement::operator%(const CPauliAlgebraElement 
         complex<float> m_cxTempPhase = m_paeElement1.m_cxElementPhase * m_paeElement2.m_cxElementPhase;
         m_paeElement1 = MakePauliAlgebraElement(m_sP3String);
         MultiplyPauliAlgebraByScalar(m_cxTempPhase, m_paeElement1);
-        // m_paeElement1.m_cxElementPhase = m_cxTempPhase * m_paeElement2.m_cxElementPhase;
-        // m_paeElement1.m_sElementString = m_sP3String;
-
-
-        /************** Old ******/
-        // string m_sP1String = this->m_sElementString;
-        // string m_sP2String = inPAElement2.m_sElementString;
-        // string m_sP3String = m_sP1String + m_sP2String;
-        // CPauliAlgebraElement m_paeResult = MakePauliAlgebraElement(m_sP3String);
-        // m_paeResult.m_cxElementPhase = this->m_cxElementPhase * inPAElement2.m_cxElementPhase;
-        // m_paeResult.m_sElementString = m_sP3String;
-
-        // m_paeElement1 = m_paeElement1 % m_paeElement2;
-        /************** Old ******/
     }
-
-    // Can LIKELY DELETE THIS! MakePauliAlgebraElement already does this I think.
-    // Turn matrix mulitplication string into matrix tensor product string. For example from XX to X @ X
-    // unsigned short int return_string_size = stripped_pstring.size();
-    // string return_string = string(1, m_paeElement1.m_sElementString.at(0));
-
-    // for ( unsigned short int c = 1; c < return_string_size; c++ ) {
-    //     return_string = return_string + " @ " + string(1, m_paeElement1.m_sElementString.at(c));
-    // }
-    // m_paeElement1.m_sElementString = return_string;
 
     return m_paeElement1;
 }
